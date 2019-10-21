@@ -7,15 +7,15 @@
 //Author: Trevor Surface
 //Date: 4/29/2019.
 
-#include "turing_machine.h"
-#include "tape.h"
-#include "input_alphabet.h"
-#include "tape_alphabet.h"
-#include "transition_function.h"
-#include "states.h"
-#include "final_states.h"
-#include "validate.h"
-#include "uppercase.h"
+#include "../headers/turing_machine.h"
+#include "../headers/tape.h"
+#include "../headers/input_alphabet.h"
+#include "../headers/tape_alphabet.h"
+#include "../headers/transition_function.h"
+#include "../headers/states.h"
+#include "../headers/final_states.h"
+#include "../headers/validate.h"
+#include "../headers/uppercase.h"
 
 #include <string>
 #include <vector>

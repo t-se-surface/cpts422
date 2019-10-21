@@ -7,10 +7,10 @@
 //Author: Trevor Surface
 //Date: 4/29/2019.
 
-#include "final_states.h"
-#include "states.h"
-#include "validate.h"
-#include "uppercase.h"
+#include "../headers/final_states.h"
+#include "../headers/states.h"
+#include "../headers/validate.h"
+#include "../headers/uppercase.h"
 
 #include <string>
 #include <vector>

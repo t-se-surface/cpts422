@@ -7,8 +7,8 @@
 //Author: Trevor Surface
 //Date: 4/29/2019.
 
-#include "transition.h"
-#include "direction.h"
+#include "../headers/transition.h"
+#include "../headers/direction.h"
 
 #include <string>
 

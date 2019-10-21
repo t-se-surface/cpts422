@@ -7,7 +7,7 @@
 //Author: Trevor Surface
 //Date: 4/29/2019.
 
-#include "validate.h"
+#include "../headers/validate.h"
 
 #include <string>
 #include <iostream>

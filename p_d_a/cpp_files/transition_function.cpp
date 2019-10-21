@@ -7,14 +7,14 @@
 //Author: Trevor Surface
 //Date: 4/29/2019.
 
-#include "transition_function.h"
-#include "transition.h"
-#include "tape_alphabet.h"
-#include "states.h"
-#include "final_states.h"
-#include "validate.h"
-#include "uppercase.h"
-#include "direction.h"
+#include "../headers/transition_function.h"
+#include "../headers/transition.h"
+#include "../headers/tape_alphabet.h"
+#include "../headers/states.h"
+#include "../headers/final_states.h"
+#include "../headers/validate.h"
+#include "../headers/uppercase.h"
+#include "../headers/direction.h"
 
 #include <string>
 #include <vector>

@@ -7,12 +7,12 @@
 //Author: Trevor Surface
 //Date: 4/29/2019.
 
-#include "tape.h"
-#include "input_alphabet.h"
-#include "tape_alphabet.h"
-#include "direction.h"
-#include "uppercase.h"
-#include "validate.h"
+#include "../headers/tape.h"
+#include "../headers/input_alphabet.h"
+#include "../headers/tape_alphabet.h"
+#include "../headers/direction.h"
+#include "../headers/uppercase.h"
+#include "../headers/validate.h"
 
 #include <string>
 #include <fstream>
