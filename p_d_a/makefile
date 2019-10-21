@@ -4,14 +4,14 @@ CPPFLAGS = -g
 
 default: tmapp
 
-tmapp: main.cpp commands.o tape.o turing_machine.o input_alphabet.o tape_alphabet.o transition_function.o transition.o states.o final_states.o validate.o uppercase.o
-	g++ -g -o $@ main.cpp commands.o turing_machine.o tape.o input_alphabet.o tape_alphabet.o transition_function.o transition.o states.o final_states.o validate.o uppercase.o
+tmapp: cpp_files/main.cpp commands.o tape.o turing_machine.o input_alphabet.o tape_alphabet.o transition_function.o transition.o states.o final_states.o validate.o uppercase.o
+	g++ -g -o $@ cpp_files/main.cpp commands.o turing_machine.o tape.o input_alphabet.o tape_alphabet.o transition_function.o transition.o states.o final_states.o validate.o uppercase.o
 
 turing_machine.o: cpp_files/turing_machine.cpp headers/turing_machine.h
 	g++ -g -c cpp_files/turing_machine.cpp headers/turing_machine.h
 
 tape.o: cpp_files/tape.cpp headers/tape.h
-	g++ -g -c cpp_files/tape.cpp tape.h
+	g++ -g -c cpp_files/tape.cpp headers/tape.h
 
 input_alphabet.o: cpp_files/input_alphabet.cpp headers/input_alphabet.h
 	g++ -g -c cpp_files/input_alphabet.cpp headers/input_alphabet.h
@@ -42,7 +42,7 @@ commands.o: cpp_files/commands.cpp headers/commands.h
 
 clean:
 	rm *.o
-	rm *.h.gch
+	rm headers/*.h.gch
 
 immaculate:
 	rm -f tmapp
