@@ -1,41 +1,38 @@
 #MakeFile for Turing Machine App
-PROGNAME = tmapp
+PROGNAME = pda_app
 CPPFLAGS = -g
 
-default: tmapp
+default: pda_app
 
-tmapp: cpp_files/main.cpp commands.o tape.o turing_machine.o input_alphabet.o tape_alphabet.o transition_function.o transition.o states.o final_states.o validate.o uppercase.o
-	g++ -g -o $@ cpp_files/main.cpp commands.o turing_machine.o tape.o input_alphabet.o tape_alphabet.o transition_function.o transition.o states.o final_states.o validate.o uppercase.o
+pda_app: cpp_files/main.cpp commands.o push_down_automata.o input_alphabet.o transition_function.o transition.o states.o stack_alphabet.o final_states.o validate.o uppercase.o
+	g++ -g -o $@ cpp_files/main.cpp commands.o push_down_automata.o input_alphabet.o transition_function.o transition.o states.o stack_alphabet.o final_states.o validate.o uppercase.o
 
-turing_machine.o: cpp_files/turing_machine.cpp headers/turing_machine.h
-	g++ -g -c cpp_files/turing_machine.cpp headers/turing_machine.h
+push_down_automata.o: cpp_files/push_down_automata.cpp headers/push_down_automata.h
+	g++ -g -c cpp_files/push_down_automata.cpp headers/push_down_automata.h
 
-tape.o: cpp_files/tape.cpp headers/tape.h
-	g++ -g -c cpp_files/tape.cpp headers/tape.h
+input_alphabet.o: file_parsers/cpp_files/input_alphabet.cpp file_parsers/headers/input_alphabet.h
+	g++ -g -c file_parsers/cpp_files/input_alphabet.cpp file_parsers/headers/input_alphabet.h
 
-input_alphabet.o: cpp_files/input_alphabet.cpp headers/input_alphabet.h
-	g++ -g -c cpp_files/input_alphabet.cpp headers/input_alphabet.h
+transition_function.o: file_parsers/cpp_files/transition_function.cpp file_parsers/headers/transition_function.h
+	g++ -g -c file_parsers/cpp_files/transition_function.cpp file_parsers/headers/transition_function.h
 
-tape_alphabet.o: cpp_files/tape_alphabet.cpp headers/tape_alphabet.h
-	g++ -g -c cpp_files/tape_alphabet.cpp headers/tape_alphabet.h
+transition.o: file_parsers/cpp_files/transition.cpp file_parsers/headers/transition.h 
+	g++ -g -c file_parsers/cpp_files/transition.cpp file_parsers/headers/transition.h 
 
-transition_function.o: cpp_files/transition_function.cpp headers/transition_function.h
-	g++ -g -c cpp_files/transition_function.cpp headers/transition_function.h
+states.o: file_parsers/cpp_files/states.cpp file_parsers/headers/states.h
+	g++ -g -c file_parsers/cpp_files/states.cpp file_parsers/headers/states.h
 
-transition.o: cpp_files/transition.cpp headers/transition.h headers/direction.h
-	g++ -g -c cpp_files/transition.cpp headers/transition.h headers/direction.h
+stack_alphabet.o: file_parsers/cpp_files/stack_alphabet.cpp file_parsers/headers/stack_alphabet.h
+	g++ -g -c file_parsers/cpp_files/stack_alphabet.cpp file_parsers/headers/stack_alphabet.h
 
-states.o: cpp_files/states.cpp headers/states.h
-	g++ -g -c cpp_files/states.cpp headers/states.h
+final_states.o: file_parsers/cpp_files/final_states.cpp file_parsers/headers/final_states.h
+	g++ -g -c file_parsers/cpp_files/final_states.cpp file_parsers/headers/final_states.h
 
-final_states.o: cpp_files/final_states.cpp headers/final_states.h
-	g++ -g -c cpp_files/final_states.cpp headers/final_states.h
+validate.o: validation/cpp_files/validate.cpp validation/headers/validate.h
+	g++ -g -c validation/cpp_files/validate.cpp validation/headers/validate.h
 
-validate.o: cpp_files/validate.cpp headers/validate.h
-	g++ -g -c cpp_files/validate.cpp headers/validate.h
-
-uppercase.o: cpp_files/uppercase.cpp headers/uppercase.h
-	g++ -g -c cpp_files/uppercase.cpp headers/uppercase.h
+uppercase.o: validation/cpp_files/uppercase.cpp validation/headers/uppercase.h
+	g++ -g -c validation/cpp_files/uppercase.cpp validation/headers/uppercase.h
 
 commands.o: cpp_files/commands.cpp headers/commands.h
 	g++ -g -c cpp_files/commands.cpp headers/commands.h 

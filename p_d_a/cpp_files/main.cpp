@@ -7,13 +7,11 @@
 //Author: Trevor Surface
 //Date: 4/29/2019.
 
-#include "../headers/turing_machine.h"
-#include "../headers/tape.h"
-#include "../headers/states.h"
-#include "../headers/input_alphabet.h"
-#include "../headers/tape_alphabet.h"
-#include "../headers/final_states.h"
-#include "../headers/transition_function.h"
+#include "../headers/push_down_automata.h"
+#include "../file_parsers/headers/states.h"
+#include "../file_parsers/headers/input_alphabet.h"
+#include "../file_parsers/headers/final_states.h"
+#include "../file_parsers/headers/transition_function.h"
 #include "../headers/commands.h"
 
 #include <iostream>
@@ -40,7 +38,7 @@ int main(int argc, char* argv[])
 		cout << "\n";
 		if(input.empty())
 		{
-			cout << "\n";
+			cout << input << "\n";
 			valid = false;
 		}
 		else 
@@ -59,7 +57,7 @@ int main(int argc, char* argv[])
 			if(validation)
 			{
 				if(input[0] == 'q' || input[0] == 'Q')
-				command.quit_helper();
+					command.quit_helper();
 				if(input[0] == 'd' || input[0] == 'D')
 					command.delete_helper();
 				if(input[0] == 'h' || input[0] == 'H')

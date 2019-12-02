@@ -8,14 +8,13 @@
 //Date: 4/29/2019.
 
 #include "../headers/commands.h"
-#include "../headers/turing_machine.h"
-#include "../headers/tape.h"
-#include "../headers/states.h"
-#include "../headers/input_alphabet.h"
-#include "../headers/tape_alphabet.h"
-#include "../headers/final_states.h"
-#include "../headers/transition_function.h"
-#include "../headers/validate.h"
+#include "../headers/configuration_settings.h"
+#include "../headers/push_down_automata.h"
+#include "../file_parsers/headers/states.h"
+#include "../file_parsers/headers/input_alphabet.h"
+#include "../file_parsers/headers/final_states.h"
+#include "../file_parsers/headers/transition_function.h"
+#include "../validation/headers/validate.h"
 
 #include <vector>
 #include <string>
@@ -23,12 +22,12 @@
 
 using namespace std;
 
-Commands::Commands(string file_name): maximum_number_of_transitions(1), maximum_truncation_value(32), 
-       			input_strings({}), running(true), turing_machine(file_name), 
-			name_of_turing_machine(file_name), is_input_string_changed(false)
+Commands::Commands(string file_name): valid(true), configuration_settings(file_name, valid), 
+       			input_strings({}), running(true), push_down_automata(file_name), 
+			name_of_push_down_automata(file_name), is_input_string_changed(false)
 {
 	ifstream definition;
-	if(turing_machine.is_valid_definition())
+	if(push_down_automata.is_valid_definition() && valid)
 	{
 		file_name.append(".str");
 		string value;
@@ -36,6 +35,7 @@ Commands::Commands(string file_name): maximum_number_of_transitions(1), maximum_
 	
 		while(definition >> value)
 		{
+			//May provide check for input strings here, make sure no unnecessary characters
 			if(list_check(value))
 				input_strings.push_back(value);
 		}
@@ -45,7 +45,7 @@ Commands::Commands(string file_name): maximum_number_of_transitions(1), maximum_
 
 bool Commands::is_running() const
 {
-	if(turing_machine.is_valid_definition())
+	if(push_down_automata.is_valid_definition())
 		return running;
 }
 
@@ -85,7 +85,7 @@ void Commands::exit_helper()
 {
 	if(is_input_string_changed)
 	{
-		string file = name_of_turing_machine;
+		string file = name_of_push_down_automata;
 		ofstream outfile;
 		file.append(".str");
 		outfile.open(file);
@@ -121,7 +121,7 @@ void Commands::insert_helper()
 		cout << "\n";
 		return;
 	}
-	if(!turing_machine.is_valid_input_string(value))
+	if(!push_down_automata.is_valid_input_string(value))
 	{
 		cout << "\nstring " << value << " was not added to the list of input strings.\n\n";
 	}
@@ -150,7 +150,7 @@ void Commands::run_helper()
 {
 	string input;
 	int validation = -1;
-	if((!turing_machine.is_used()) || (!turing_machine.is_operating()))
+	if((!push_down_automata.is_used()) || (!push_down_automata.is_operating()))
 	{
 		cout << "please indicate a string to run by number: ";
 		getline(cin, input);
@@ -173,30 +173,30 @@ void Commands::run_helper()
 			cout << "\ninput out of bounds of list\n\n";
 			return;
 		}
-		turing_machine.initialize(input_strings[validation-1]);
+		push_down_automata.initialize(input_strings[validation-1]);
 		cout << "\n";
-		turing_machine.view_instantaneous_description(maximum_truncation_value);
-		turing_machine.perform_transitions(maximum_number_of_transitions);
-		turing_machine.view_instantaneous_description(maximum_truncation_value);
+		push_down_automata.view_instantaneous_description(configuration_settings.truncation_value());
+		push_down_automata.perform_transitions(configuration_settings.number_of_transitions());
+		push_down_automata.view_instantaneous_description(configuration_settings.truncation_value());
 		cout << "\n";
 		return;
 	}
-	if((turing_machine.is_used()) && (turing_machine.is_operating()))
+	if((push_down_automata.is_used()) && (push_down_automata.is_operating()))
 	{
-		turing_machine.perform_transitions(maximum_number_of_transitions);
-		turing_machine.view_instantaneous_description(maximum_truncation_value);
+		push_down_automata.perform_transitions(configuration_settings.number_of_transitions());
+		push_down_automata.view_instantaneous_description(configuration_settings.truncation_value());
 		cout << "\n";
-		if(turing_machine.is_accepted_input_string())
+		if(push_down_automata.is_accepted_input_string())
 		{
-			cout << "the string " << turing_machine.input_string() << " has been accepted in ";
-	       		cout << turing_machine.total_number_of_transitions() << " transitions.\n\n";	
+			cout << "the string " << push_down_automata.input_string() << " has been accepted in ";
+	       		cout << push_down_automata.total_number_of_transitions() << " transitions.\n\n";	
 			return;
 		}
-		if(turing_machine.is_rejected_input_string())
+		if(push_down_automata.is_rejected_input_string())
 		{
 			cout << "no transition could be performed the string ";
-			cout << turing_machine.input_string() << " is rejected in ";
-			cout << turing_machine.total_number_of_transitions() << " transitions.\n\n";
+			cout << push_down_automata.input_string() << " is rejected in ";
+			cout << push_down_automata.total_number_of_transitions() << " transitions.\n\n";
 			return;
 		}
 		return;
@@ -206,8 +206,8 @@ void Commands::run_helper()
 void Commands::set_helper()
 {
 	string input;
-	int validation = maximum_number_of_transitions;
-	cout << "maximum number of transitions is [" << maximum_number_of_transitions << "]: ";
+	int validation = configuration_settings.number_of_transitions();
+	cout << "maximum number of transitions is [" << configuration_settings.number_of_transitions() << "]: ";
 	getline(cin, input);
 	if(input.empty())
 	{
@@ -222,9 +222,16 @@ void Commands::set_helper()
 	{
 		cout << "\ncoud not convert " << error.what() << ".\n\n";
 		return;
-	}	
-	maximum_number_of_transitions = validation;
-	cout << "\nmaximum number of transitions set to: " << maximum_number_of_transitions << "\n\n";
+	}
+	
+	validation = is_valid_number(input);
+	if(validation < 0)
+	{
+		cout << "invlaid number\n\n";
+		return;
+	}
+	//configuration_settings.number_of_transitions() = validation;
+	cout << "\nmaximum number of transitions set to: " << configuration_settings.number_of_transitions() << "\n\n";
 }
 
 void Commands::show_helper() const
@@ -233,44 +240,44 @@ void Commands::show_helper() const
 	cout <<	"INST: NIEL CORRIGAN.\n";
 	cout << "AUTH: TREVOR SURFACE\n";
 	cout << "V. 1.0.1\n\n";
-	cout << "Maximum transitions set " << maximum_number_of_transitions << ".\n";
-	cout << "truncate value set " << maximum_truncation_value << ".\n\n";
-	cout << "TM::" << name_of_turing_machine << "\n\n"; 
-	if(!turing_machine.is_used())
+	cout << "Maximum transitions set " << configuration_settings.number_of_transitions() << ".\n";
+	cout << "truncate value set " << configuration_settings.truncation_value() << ".\n\n";
+	cout << "TM::" << name_of_push_down_automata << "\n\n"; 
+	if(!push_down_automata.is_used())
 	{
 		cout << "the turing machine has not been used.\n\n";
 	}
-	if((turing_machine.is_used()) && (turing_machine.is_operating()))
+	if((push_down_automata.is_used()) && (push_down_automata.is_operating()))
 	{
-		cout << "input string: " << turing_machine.input_string() << "\n";
-		cout << "transitions: " << turing_machine.total_number_of_transitions() << "\n\n";
+		cout << "input string: " << push_down_automata.input_string() << "\n";
+		cout << "transitions: " << push_down_automata.total_number_of_transitions() << "\n\n";
 	}
-	if((turing_machine.is_used()) && (!turing_machine.is_operating()))
+	if((push_down_automata.is_used()) && (!push_down_automata.is_operating()))
 	{
-		cout << "input string: " << turing_machine.input_string();
+		cout << "input string: " << push_down_automata.input_string();
 		cout << " was";
 		
-		if(turing_machine.is_accepted_input_string())
+		if(push_down_automata.is_accepted_input_string())
 		{
 			cout << " accepted";
 		}
-		if(turing_machine.is_rejected_input_string())
+		if(push_down_automata.is_rejected_input_string())
 		{
 			cout << " rejected";
 		}
-		if((!turing_machine.is_accepted_input_string()) && (!turing_machine.is_rejected_input_string()))
+		if((!push_down_automata.is_accepted_input_string()) && (!push_down_automata.is_rejected_input_string()))
 		{
 			cout << " neither accepted or rejected";
 		}
- 		cout << " in " << turing_machine.total_number_of_transitions() << " transitions.\n\n";
+ 		cout << " in " << push_down_automata.total_number_of_transitions() << " transitions.\n\n";
 	}
 }
 
 void Commands::truncate_helper()
 {
 	string input;
-        int validation = maximum_truncation_value;
-	cout << "current truncation value is [" << maximum_truncation_value << "]: ";
+    int validation = configuration_settings.truncation_value();
+	cout << "current truncation value is [" << configuration_settings.truncation_value() << "]: ";
 	getline(cin, input);
 	if(input.empty())
 	{
@@ -293,18 +300,18 @@ void Commands::truncate_helper()
 		cout << "invlaid number\n\n";
 		return;
 	}
-	maximum_truncation_value = validation;
-	cout << "\nnew truncation value set to " << maximum_truncation_value << "\n\n";
+	//configuration_settings.truncation_value() = validation;
+	cout << "\nnew truncation value set to " << configuration_settings.truncation_value() << "\n\n";
 }
 
 void Commands::view_helper() const 
 {
-	turing_machine.view_definition();
+	push_down_automata.view_definition();
 }
 
 void Commands::quit_helper()
 {
-	turing_machine.terminate_operation();
+	push_down_automata.terminate_operation();
 }
 
 bool Commands::list_check(string& value)

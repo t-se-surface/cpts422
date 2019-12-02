@@ -12,13 +12,12 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include "turing_machine.h"
-#include "tape.h"
-#include "states.h"
-#include "input_alphabet.h"
-#include "tape_alphabet.h"
-#include "final_states.h"
-#include "transition_function.h"
+#include "push_down_automata.h"
+#include "configuration_settings.h"
+#include "../file_parsers/headers/states.h"
+#include "../file_parsers/headers/input_alphabet.h"
+#include "../file_parsers/headers/final_states.h"
+#include "../file_parsers/headers/transition_function.h"
 
 #include <vector>
 #include <string>
@@ -32,22 +31,20 @@ class Commands
 		bool running;
 		//@param this initiates the run of the program
 
+		bool valid;
+
 		bool is_input_string_changed;
 		//@param this sets when the list of inputs strings is altered
 
-		int maximum_number_of_transitions;
-		//@param configuration setting for number of transitions
+		Configuration_Settings configuration_settings;
 
-		int maximum_truncation_value;
-		//@param configuration setting for truncation of instantaneous description
-		
-		string name_of_turing_machine;
+		string name_of_push_down_automata;
 		//@param stores the name of turing machine for later use 
 
 		vector<string> input_strings;
 		//@param stores the list of input string from the .str file
 
-		Turing_Machine turing_machine;
+		Push_Down_Automata push_down_automata;
 		//@param this provides the instance of the turing machine itself
 
 	public:
