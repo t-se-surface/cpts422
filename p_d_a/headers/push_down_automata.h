@@ -86,6 +86,9 @@ class Push_Down_Automata
 		//@param bool that provides if the input string is rejected
 
 	public:
+
+		int crashes;
+
 		Push_Down_Automata(string definition_file_name);
 		//@param this function takes in a string definition file name
 		//@func this function tries to open the file passed into the turing machine

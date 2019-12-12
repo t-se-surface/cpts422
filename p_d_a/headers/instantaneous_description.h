@@ -24,7 +24,7 @@ class Instantaneous_Description
         Instantaneous_Description();
         Instantaneous_Description(string state, string input_string, string current_stack, int pid);
         void view(Configuration_Settings_Pointer configuration_settings_pointer) const;
-        vector<Instantaneous_Description> perform_transition(Transition_Function transition_function, bool& found) const;
+        vector<Instantaneous_Description> perform_transition(Transition_Function transition_function, int& crashes, bool& found) const;
         string state() const;
         char input_character() const;
         char top_of_stack() const;

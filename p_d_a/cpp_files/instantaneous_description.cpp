@@ -38,9 +38,26 @@ void Instantaneous_Description::view(Configuration_Settings_Pointer configuratio
   }
 }
 
-vector<Instantaneous_Description> Instantaneous_Description::perform_transition(Transition_Function transition_function, bool& found) const
+vector<Instantaneous_Description> Instantaneous_Description::perform_transition(Transition_Function transition_function, int& crashes, bool& found) const
 {
+  vector<Instantaneous_Description> temp_IDs;
+  vector<Transition> transitions;
+  string temp_input_string;
+  string temp_stack;
 
+  temp_input_string = remaining_input_string.erase(remaining_input_string[0]);
+
+  transitions = transition_function.find_transitions(state(), input_character(), top_of_stack(), found)
+
+  for(vector<Transition>::iterator it = transitions.begin(); it != transitions.end(); ++it))
+  {
+    temp_stack = stack;
+    temp_stack = temp_stack.insert(0, it->push_stack_characters());
+
+    Instantaneous_Description t_ID(it->destination_state(), temp_input_string, temp_stack, id);
+    temp_IDs.push_back(t_ID);
+  }
+  return temp_IDs;
 }
 
 string Instantaneous_Description::state() const
