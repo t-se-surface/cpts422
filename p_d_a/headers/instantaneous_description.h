@@ -10,14 +10,18 @@ class Instantaneous_Description
 {
     private:
         string current_state;
-        
+
         string remaining_input_string;
-        
+
         string stack;
-    
+
+        int id;
+
+        int pid;
+
     public:
         Instantaneous_Description();
-        Instantaneous_Description(string initial_state, string inputstring, char start_character);
+        Instantaneous_Description(string initial_state, string input_string, char start_character, int pid);
         void view(Configuration_Settings_Pointer configuration_settings_pointer) const;
         void perform_transition(string destination_state, string push_string, Instantaneous_Description& instantaneous_description) const;
         void perform_lamda_transition(string destination_state, string push_string, Instantaneous_Description& instantaneous_description) const;

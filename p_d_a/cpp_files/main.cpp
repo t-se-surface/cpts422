@@ -41,13 +41,13 @@ int main(int argc, char* argv[])
 			cout << input << "\n";
 			valid = false;
 		}
-		else 
+		else
 			valid = true;
 		if(valid)
 		{
 			try
 			{
-				validation = is_valid_char(input);	
+				validation = is_valid_char(input);
 			}
 			catch(exception& error)
 			{
@@ -56,28 +56,28 @@ int main(int argc, char* argv[])
 			}
 			if(validation)
 			{
-				if(input[0] == 'q' || input[0] == 'Q')
+				if(input[0] == 'q' || input[0] == 'Q') //yes
 					command.quit_helper();
-				if(input[0] == 'd' || input[0] == 'D')
-					command.delete_helper();
-				if(input[0] == 'h' || input[0] == 'H')
+				if(input[0] == 'o' || input[0] == 'O')
+				 	command.open_helper();
+				if(input[0] == 'c' || input[0] == 'C')
+					command.close_helper();
+				if(input[0] == 'h' || input[0] == 'H') //yes
 					command.help_helper();
-				if(input[0] == 'l' || input[0] == 'L')
+				if(input[0] == 'l' || input[0] == 'L') //yes
 					command.list_helper();
-				if(input[0] == 't' || input[0] == 'T')
-					command.truncate_helper();
-				if(input[0] == 'i' || input[0] == 'I')
+				if(input[0] == 'i' || input[0] == 'I') //yes
 					command.insert_helper();
-				if(input[0] == 'e' || input[0] == 'E')
-					command.set_helper();
-				if(input[0] == 'r' || input[0] == 'R')
+				if(input[0] == 'p' || input[0] == 'P')
+					command.display_helper();
+				if(input[0] == 'r' || input[0] == 'R') //yes
 					command.run_helper();
-				if(input[0] == 'w' || input[0] == 'W')
+				if(input[0] == 'w' || input[0] == 'W') //yes
 					command.show_helper();
-				if(input[0] == 'v' || input[0] == 'V')
+				if(input[0] == 'v' || input[0] == 'V') //yes
 					command.view_helper();
-				if(input[0] == 'x' || input[0] =='X')
-					command.exit_helper();	
+				if(input[0] == 'x' || input[0] =='X') //yes
+					command.exit_helper();
 		//		else //find way to include, may change to case statement with to uppercase
 		//		{
 		//			cout << "\tplease use a valid use character.\n";
@@ -89,4 +89,3 @@ int main(int argc, char* argv[])
 	cout << "exit successful\n";
 	return success;
 }
-

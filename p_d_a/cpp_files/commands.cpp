@@ -1,5 +1,5 @@
 //Module: Main interface
-//File: commands.h
+//File: commands.cpp
 //Application: turing machine application
 //Language c++
 //OS: linux os ubuntu
@@ -22,8 +22,8 @@
 
 using namespace std;
 
-Commands::Commands(string file_name): valid(true), configuration_settings(file_name, valid), 
-       			input_strings({}), running(true), push_down_automata(file_name), 
+Commands::Commands(string file_name): valid(true), configuration_settings(file_name, valid),
+       			input_strings({}), running(true), push_down_automata(file_name),
 			name_of_push_down_automata(file_name), is_input_string_changed(false)
 {
 	ifstream definition;
@@ -31,15 +31,15 @@ Commands::Commands(string file_name): valid(true), configuration_settings(file_n
 	{
 		file_name.append(".str");
 		string value;
-		definition.open(file_name); 
-	
+		definition.open(file_name);
+
 		while(definition >> value)
 		{
 			//May provide check for input strings here, make sure no unnecessary characters
 			if(list_check(value))
 				input_strings.push_back(value);
 		}
-		
+
 	}
 }
 
@@ -47,38 +47,6 @@ bool Commands::is_running() const
 {
 	if(push_down_automata.is_valid_definition())
 		return running;
-}
-
-void Commands::delete_helper()
-{
-	string input;
-	int validation = 0;
-	cout << "please indicate which string to delete by number: ";
-	getline(cin, input);
-	if(input.empty())
-	{
-		cout << "\n";
-		return;
-	}
-	try
-	{
-		validation = is_valid_number(input);
-	}
-	catch(exception& error)
-	{
-		cout << "\ncoud not convert " << error.what() << ".\n\n";
-		return;
-	}	
-	
-	validation = is_valid_number(input);
-	if((validation < 0) || (validation > input_strings.size()))
-	{
-		cout << "\ninvalid number\n\n";
-		return;
-	}
-	cout << "\n" << input_strings[validation - 1] << " was removed from list of strings.\n\n";
-	input_strings.erase(input_strings.begin() + validation - 1);
-	is_input_string_changed = true;
 }
 
 void Commands::exit_helper()
@@ -98,22 +66,22 @@ void Commands::exit_helper()
 
 void Commands::help_helper() const
 {
-	cout << "(d)elete	deletes input string from list\n";
-	cout << "e(x)it		exit application\n";
-	cout << "(h)elp		help user\n";
-	cout << "(i)nsert	insert new input string into list\n";
-	cout << "(l)ist		list input strings\n";
-	cout << "(r)un		run turing machine on input string\n";
-	cout << "s(e)t		set maximum number of transitions to preform\n";
-	cout << "sho(w)		show status of application\n";
-	cout << "(t)runcate	truncate instantaneous descricptions\n";
-	cout << "(v)iew		view turing machine\n";
-	cout << "(q)uit		quit operation of the turing machine on input string\n\n";
+  cout << "(o)pen		  open new PDA\n";
+  cout << "(c)lose		close running PDA\n";
+	cout << "dis(p)lay	display paths through pda\n";
+  cout << "e(x)it		  exit application\n";
+	cout << "(h)elp		  help user\n";
+	cout << "(i)nsert	  insert new input string into list\n";
+	cout << "(l)ist		  list input strings\n";
+	cout << "(r)un		  run turing machine on input string\n";
+	cout << "sho(w)		  show status of application\n";
+	cout << "(v)iew		  view turing machine\n";
+	cout << "(q)uit		  quit operation of the turing machine on input string\n\n";
 }
 
 void Commands::insert_helper()
 {
-	string value; 
+	string value;
 	cout << "please enter a new string: ";
 	getline(cin, value);
 	if(value.empty())
@@ -189,7 +157,7 @@ void Commands::run_helper()
 		if(push_down_automata.is_accepted_input_string())
 		{
 			cout << "the string " << push_down_automata.input_string() << " has been accepted in ";
-	       		cout << push_down_automata.total_number_of_transitions() << " transitions.\n\n";	
+	       		cout << push_down_automata.total_number_of_transitions() << " transitions.\n\n";
 			return;
 		}
 		if(push_down_automata.is_rejected_input_string())
@@ -203,46 +171,15 @@ void Commands::run_helper()
 	}
 }
 
-void Commands::set_helper()
-{
-	string input;
-	int validation = configuration_settings.number_of_transitions();
-	cout << "maximum number of transitions is [" << configuration_settings.number_of_transitions() << "]: ";
-	getline(cin, input);
-	if(input.empty())
-	{
-		cout << "\n";
-		return;
-	}
-	try
-	{
-		validation = is_valid_number(input);
-	}
-	catch(exception& error)
-	{
-		cout << "\ncoud not convert " << error.what() << ".\n\n";
-		return;
-	}
-	
-	validation = is_valid_number(input);
-	if(validation < 0)
-	{
-		cout << "invlaid number\n\n";
-		return;
-	}
-	//configuration_settings.number_of_transitions() = validation;
-	cout << "\nmaximum number of transitions set to: " << configuration_settings.number_of_transitions() << "\n\n";
-}
-
 void Commands::show_helper() const
 {
-	cout << "CPTS350, SEM: 2, YEAR: 2019\n"; 
+	cout << "CPTS350, SEM: 2, YEAR: 2019\n";
 	cout <<	"INST: NIEL CORRIGAN.\n";
 	cout << "AUTH: TREVOR SURFACE\n";
 	cout << "V. 1.0.1\n\n";
 	cout << "Maximum transitions set " << configuration_settings.number_of_transitions() << ".\n";
 	cout << "truncate value set " << configuration_settings.truncation_value() << ".\n\n";
-	cout << "TM::" << name_of_push_down_automata << "\n\n"; 
+	cout << "TM::" << name_of_push_down_automata << "\n\n";
 	if(!push_down_automata.is_used())
 	{
 		cout << "the turing machine has not been used.\n\n";
@@ -256,7 +193,7 @@ void Commands::show_helper() const
 	{
 		cout << "input string: " << push_down_automata.input_string();
 		cout << " was";
-		
+
 		if(push_down_automata.is_accepted_input_string())
 		{
 			cout << " accepted";
@@ -273,38 +210,22 @@ void Commands::show_helper() const
 	}
 }
 
-void Commands::truncate_helper()
+void Commands::open_helper()
 {
-	string input;
-    int validation = configuration_settings.truncation_value();
-	cout << "current truncation value is [" << configuration_settings.truncation_value() << "]: ";
-	getline(cin, input);
-	if(input.empty())
-	{
-		cout << "\n";
-		return;
-	}
-	try
-	{
-		validation = is_valid_number(input);
-	}
-	catch(exception& error)
-	{
-		cout << "\ncoud not convert " << error.what() << ".\n\n";
-		return;
-	}	
-	
-	validation = is_valid_number(input);
-	if(validation < 0)
-	{
-		cout << "invlaid number\n\n";
-		return;
-	}
-	//configuration_settings.truncation_value() = validation;
-	cout << "\nnew truncation value set to " << configuration_settings.truncation_value() << "\n\n";
+
 }
 
-void Commands::view_helper() const 
+void Commands::close_helper()
+{
+
+}
+
+void Commands::display_helper()
+{
+
+}
+
+void Commands::view_helper() const
 {
 	push_down_automata.view_definition();
 }
@@ -323,7 +244,7 @@ bool Commands::list_check(string& value)
 				cout << "\nduplicate string found at " <<  i +  1;
 			       	cout << " string: " << value << " discarded.\n\n";
 				is_input_string_changed = true;
-				return false;	
+				return false;
 			}
 		}
 		return true;

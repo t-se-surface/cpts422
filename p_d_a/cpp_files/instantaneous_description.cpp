@@ -3,9 +3,7 @@
 //Application: turing machine application
 //Language c++
 //OS: linux os ubuntu
-//Class: cpts 322
-//Author: Trevor Surface
-//Date: 4/29/2019.
+//Class: cpts 422
 
 #include "../headers/instantaneous_description.h"
 
@@ -17,12 +15,27 @@ using namespace std;
 Instantaneous_Description::Instantaneous_Description()
 {}
 
-Instantaneous_Description::Instantaneous_Description(string initial_state, string inputstring, char start_character):
+Instantaneous_Description::Instantaneous_Description(string initial_state, string input_string, char start_character, int parent):
                                                                      current_state(" "), remaining_input_string(" "), stack(" ")
-{}
+{
+  pid = parent;
+  current_state = initial_state;
+  remaining_input_string = input_string;
+  stack = start_character
+}
 
 void Instantaneous_Description::view(Configuration_Settings_Pointer configuration_settings_pointer) const
-{}
+{
+  //TODO Add check for truncation based on passed in configuration settings.
+  if (remaining_input_string.length() <= configuration_settings_pointer->maximum_truncation_value && stack.length() <= configuration_settings_pointer->maximum_truncation_value)
+  {
+    cout << "[" << current_state << "] ";
+    cout << "(" << remaining_input_string << ") ":
+    cout << stack << endl;
+  } else {
+    //TODO truncate the remaining_input_string and stack
+  }
+}
 
 void Instantaneous_Description::perform_transition(string destination_state, string push_string, Instantaneous_Description& instantaneous_description) const
 {}
@@ -37,7 +50,7 @@ string Instantaneous_Description::state() const
 
 char Instantaneous_Description::input_character() const
 {
-    return 'a';
+    return remaining_input_string[0];
 }
 
 char Instantaneous_Description::top_of_stack() const

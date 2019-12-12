@@ -23,15 +23,15 @@
 
 using namespace std;
 
-Push_Down_Automata::Push_Down_Automata(string definition_file_name): description({}), valid(true), initial_state(" "),           
+Push_Down_Automata::Push_Down_Automata(string definition_file_name): description({}), valid(true), initial_state(" "),
 							current_state(" "), start_character(" "), original_input_string(" "), number_of_transitions(0),
 							used(false), operating(false), accepted(false), rejected(false)
 {
 	ifstream definition;
 	definition_file_name.append(".def");
 	string value, value2;
-	definition.open(definition_file_name); 
-	if(definition.good())	
+	definition.open(definition_file_name);
+	if(definition.good())
 	{
 		int pos = 0;
 		while(getline(definition,value))
@@ -46,22 +46,22 @@ Push_Down_Automata::Push_Down_Automata(string definition_file_name): description
 					{
 						cout << "\nkeyword \"states:\" could not be found\n\n";
 						valid = false;
-					}		
+					}
 				}
 				value2 = value.substr(found - 6, found + 1);
 				if(to_uppercase(value2) == "STATES:")
 				{
-					int length = definition.tellg();	
+					int length = definition.tellg();
 					definition.seekg(length - value.length() + found);
 					states.load(definition, valid);
 					break;
 				}
 			}
-			else 
+			else
 			{
 				description.push_back(value);
 				pos += value.length();
-			}	
+			}
 		}
 		input_alphabet.load(definition, valid);
 		stack_alphabet.load(definition, valid);
@@ -75,14 +75,14 @@ Push_Down_Automata::Push_Down_Automata(string definition_file_name): description
 			{
 				cout << "\ninitial state " << value << " is not a legal state.\n\n";
 				valid = false;
-			}	
+			}
 		}
 		/*if((definition >> value) && (to_uppercase(value) == "BLANK_CHARACTER:"))
 			tape.load(definition, valid);
 		else
 		{
 			cout << "\nkeyword \"blank_character:\" could not be found.\n\n";
-			valid = false;	
+			valid = false;
 		}*/
 		if((definition >> value) && (to_uppercase(value) == "START_CHARACTER:"))
 		{
@@ -92,14 +92,14 @@ Push_Down_Automata::Push_Down_Automata(string definition_file_name): description
 			{
 				cout << "\nstart character " << value << " is not a legal character.\n\n";
 				valid = false;
-			}	
+			}
 		}
 		if((definition >> value) && (to_uppercase(value) == "FINAL_STATES:"))
 			final_states.load(definition, valid);
 		else
 		{
 			cout << "\nkeyword \"final_states:\" could not be found.\n\n";
-			valid = false;		
+			valid = false;
 		}
 		if(valid)
 		{
@@ -175,7 +175,7 @@ void Push_Down_Automata::perform_transitions(int maximum_number_of_transitions)
 	bool found = false;
 	string destination_state;
 	char write_character;
-	//direction move_direction;
+	
 	for(int i = 0; i < maximum_number_of_transitions; ++i)
 	{
 		if(final_states.is_element(current_state))
@@ -184,7 +184,7 @@ void Push_Down_Automata::perform_transitions(int maximum_number_of_transitions)
 			operating = false;
 			return;
 		}
-		//transition_function.find_transition(current_state, tape.current_character(), 
+		//transition_function.find_transition(current_state, tape.current_character(),
 				//destination_state, write_character, move_direction, found);
 		if(found)
 		{
@@ -218,7 +218,7 @@ void Push_Down_Automata::terminate_operation()
 		accepted = false;
 		rejected = false;
 	}
-	else 
+	else
 		cout << "turing machine is currently not operating.\n\n";
 }
 

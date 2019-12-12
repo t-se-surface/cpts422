@@ -4,8 +4,8 @@ CPPFLAGS = -g
 
 default: pda_app
 
-pda_app: cpp_files/main.cpp commands.o push_down_automata.o input_alphabet.o transition_function.o transition.o states.o stack_alphabet.o final_states.o validate.o uppercase.o
-	g++ -g -o $@ cpp_files/main.cpp commands.o push_down_automata.o input_alphabet.o transition_function.o transition.o states.o stack_alphabet.o final_states.o validate.o uppercase.o
+pda_app: cpp_files/main.cpp commands.o push_down_automata.o input_alphabet.o transition_function.o transition.o states.o stack_alphabet.o final_states.o validate.o uppercase.o configuration_settings.o
+	g++ -g -o $@ cpp_files/main.cpp commands.o push_down_automata.o input_alphabet.o transition_function.o transition.o states.o stack_alphabet.o final_states.o validate.o uppercase.o configuration_settings.o
 
 push_down_automata.o: cpp_files/push_down_automata.cpp headers/push_down_automata.h
 	g++ -g -c cpp_files/push_down_automata.cpp headers/push_down_automata.h
@@ -36,6 +36,9 @@ uppercase.o: validation/cpp_files/uppercase.cpp validation/headers/uppercase.h
 
 commands.o: cpp_files/commands.cpp headers/commands.h
 	g++ -g -c cpp_files/commands.cpp headers/commands.h 
+
+configuration_settings.o: cpp_files/configuration_settings.cpp headers/configuration_settings.h
+	g++ -g -c cpp_files/configuration_settings.cpp headers/configuration_settings.h
 
 clean:
 	rm *.o

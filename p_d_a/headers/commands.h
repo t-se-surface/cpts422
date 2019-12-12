@@ -39,7 +39,7 @@ class Commands
 		Configuration_Settings configuration_settings;
 
 		string name_of_push_down_automata;
-		//@param stores the name of turing machine for later use 
+		//@param stores the name of turing machine for later use
 
 		vector<string> input_strings;
 		//@param stores the list of input string from the .str file
@@ -56,75 +56,80 @@ class Commands
 		bool is_running() const;
 		//@param this function takes no arguments
 		//@func this function returns the value of the private running boolean
-		//@return this function returns a bool 
+		//@return this function returns a bool
 
-		void delete_helper();
+		// void delete_helper();
 		//@param this function takes no parameters
-		//@func this function allows the user to delete a string from the list of 
+		//@func this function allows the user to delete a string from the list of
 		//input strings
 		//@return this function has no return
-		
+
 		void exit_helper();
 		//@param this function takes no parameters
 		//@func this function allows the user to exit the application
 		//@return this function has no return
-		
+
 		void help_helper() const;
 		//@param this function takes no parameters
 		//@func this function allows the user to see the character for each command
 		//and what the command does
 		//@return this function has no return
-		
+
 		void insert_helper();
 		//@param this function takes no parameters
-		//@func this function allows the user to insert a new string into the 
+		//@func this function allows the user to insert a new string into the
 		//list of input strings
 		//@return this function has no return
-		
+
 		void list_helper() const;
 		//@param this function takes no parameters
 		//@func this function allows the user to see the list of input strings
 		//currently stored int he commands program
 		//@return this function has no return
-		
+
 		void run_helper();
 		//@param this function takes no parameters
 		//@func this function allows the user to actually run transitions on
 		//an input string, or select an input string to use
 		//@return this function has no return
-		
-		void set_helper();
-		//@param this function takes no parameters
-		//@func this function allows the user to change to amount of transitions 
-		//performed on the input string
-		//@return this function has no return
-		
+
 		void show_helper() const;
 		//@param this function takes no parameters
 		//@func this function allows the user to see important information about
-		//the current turing machine 
+		//the current turing machine
 		//@return this function has no return
-		
-		void truncate_helper();
+
+		void open_helper();
 		//@param this function takes no parameters
-		//@func this function allows the user to change the truncation value
+		//@func this function allows the user to open a PDA
 		//@return this function has no return
-		
+
+		void close_helper();
+		//@param this function takes no parameters
+		//@func this function allows the user to close a PDA
+		//@return this function has no return
+
+		void display_helper();
+		//@param this function takes no parameters
+		//@func this function allows the user to display the current paths
+		//through the running PDA
+		//@return this function has no return
+
 		void view_helper() const;
 		//@param this function takes no parameters
-		//@func this function allows the user to see the contents of the 
+		//@func this function allows the user to see the contents of the
 		//definition file in original format
 		//@return this function has no return
-		
+
 		void quit_helper();
 		//@param this function takes no parameters
-		//@func this function allows the user to quit operation on an input 
+		//@func this function allows the user to quit operation on an input
 		//string
 		//@return this function has no return
 
 		bool list_check(string& value);
 		//@param this function takes a reference to a string value
-		//@func this function checks the passed in value to the list of strings 
+		//@func this function checks the passed in value to the list of strings
 		//to validate the passed in string
 		//@return this function returns a bool
 };
