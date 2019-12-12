@@ -132,7 +132,7 @@ void Transition_Function::view() const
 	cout << "\n";
 }
 
-vector<Transition> Transition_Function::find_transitions(string source_state, char read_character, char read_stack, bool& found) const
+vector<Transition> Transition_Function::find_transitions(string source_state, char read_character, char read_stack, bool& found)
 {
 	found = false;
 	vector<Transition> transition_list;

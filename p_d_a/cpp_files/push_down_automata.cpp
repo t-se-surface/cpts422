@@ -15,6 +15,7 @@
 #include "../file_parsers/headers/final_states.h"
 #include "../validation/headers/validate.h"
 #include "../validation/headers/uppercase.h"
+#include "../headers/instantaneous_description.h"
 
 #include <string>
 #include <vector>
@@ -189,7 +190,7 @@ void Push_Down_Automata::perform_transitions(int maximum_number_of_transitions)
 				return;
 			}
 
-			temp_ID = it->perform_transition(transition_function, found);
+			temp_ID = it->perform_transition(transition_function, crashes, found);
 
 			for(vector<Instantaneous_Description>::iterator it2 = temp_ID.begin(); it2 != temp_ID.end(); ++it2)
 			{

@@ -6,6 +6,8 @@
 //Class: cpts 422
 
 #include "../headers/instantaneous_description.h"
+#include "../file_parsers/headers/transition_function.h"
+#include "../file_parsers/headers/transition.h"
 
 #include <string>
 #include <iostream>
@@ -16,26 +18,26 @@ using namespace std;
 Instantaneous_Description::Instantaneous_Description()
 {}
 
-Instantaneous_Description::Instantaneous_Description(string initial_state, string input_string, char start_character, int parent):
+Instantaneous_Description::Instantaneous_Description(string initial_state, string input_string, string current_stack, int parent):
                                                                      current_state(" "), remaining_input_string(" "), stack(" ")
 {
   pid = parent;
   current_state = initial_state;
   remaining_input_string = input_string;
-  stack = start_character
+  stack = current_stack;
 }
 
 void Instantaneous_Description::view(Configuration_Settings_Pointer configuration_settings_pointer) const
 {
   //TODO Add check for truncation based on passed in configuration settings.
-  if (remaining_input_string.length() <= configuration_settings_pointer->maximum_truncation_value && stack.length() <= configuration_settings_pointer->maximum_truncation_value)
-  {
+  // if (remaining_input_string.length() <= configuration_settings_pointer->maximum_truncation_value && stack.length() <= configuration_settings_pointer->maximum_truncation_value)
+  // {
     cout << "[" << current_state << "] ";
-    cout << "(" << remaining_input_string << ") ":
+    cout << "(" << remaining_input_string << ") ";
     cout << stack << endl;
-  } else {
-    //TODO truncate the remaining_input_string and stack
-  }
+  // } else {
+  //   //TODO truncate the remaining_input_string and stack
+  // }
 }
 
 vector<Instantaneous_Description> Instantaneous_Description::perform_transition(Transition_Function transition_function, int& crashes, bool& found) const
@@ -45,11 +47,13 @@ vector<Instantaneous_Description> Instantaneous_Description::perform_transition(
   string temp_input_string;
   string temp_stack;
 
-  temp_input_string = remaining_input_string.erase(remaining_input_string[0]);
+  temp_input_string = remaining_input_string;
 
-  transitions = transition_function.find_transitions(state(), input_character(), top_of_stack(), found)
+  temp_input_string = temp_input_string.erase(temp_input_string[0]);
 
-  for(vector<Transition>::iterator it = transitions.begin(); it != transitions.end(); ++it))
+  transitions = transition_function.find_transitions(state(), input_character(), top_of_stack(), found);
+
+  for(vector<Transition>::iterator it = transitions.begin(); it != transitions.end(); ++it)
   {
     temp_stack = stack;
     temp_stack = temp_stack.insert(0, it->push_stack_characters());

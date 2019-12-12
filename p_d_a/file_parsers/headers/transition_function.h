@@ -54,7 +54,7 @@ class Transition_Function
 		//functions using the greek characters
 		//@return this function has no return
 
-		vector<Transition> find_transitions(string source_state, char read_character, char read_stack, bool& found) const;
+		vector<Transition> find_transitions(string source_state, char read_character, char read_stack, bool& found);
 
 		//@param this function takes a string source state, a characer read character
 		//a reference to a string destination, a reference to a character write character

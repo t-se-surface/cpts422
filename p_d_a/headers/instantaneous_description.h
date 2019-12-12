@@ -2,6 +2,9 @@
 #define INSTANTANEOUS_DESCRIPTION_H
 
 #include "../headers/configuration_settings.h"
+#include "../file_parsers/headers/transition_function.h"
+#include "../file_parsers/headers/transition.h"
+
 #include <string>
 #include <vector>
 
