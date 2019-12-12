@@ -66,7 +66,7 @@ void Transition_Function::load(ifstream& definition, bool& valid)
 			cout << "the push stack " << value << " is an invalid push stack.\n\n";
 			valid = false;
 		}
-		if((!source_state.empty()) && (!read_character.empty()) && (!read_stack.empty()) && (!destination_state.empty()) 
+		if((!source_state.empty()) && (!read_character.empty()) && (!read_stack.empty()) && (!destination_state.empty())
 					&& (!push_stack.empty()))
 		{
 			Transition transition(source_state, read_character[0], read_stack[0], destination_state, push_stack);
@@ -75,20 +75,20 @@ void Transition_Function::load(ifstream& definition, bool& valid)
 	}
 	if((to_uppercase(value) == "INITIAL_STATE:"))
 	{
-		int length = definition.tellg(); 
+		int length = definition.tellg();
 		definition.seekg(length - value.length());
 		return;
 	}
 	else
 	{
 		int length = definition.tellg();
-		definition.seekg(length - value.length());	
+		definition.seekg(length - value.length());
 		cout << "\nkeyword \"initial_state:\" could not be found\n\n";
 		valid = false;
 	}
 }
 
-void Transition_Function::validate(const Stack_Alphabet& stack_alphabet, const States& states, 
+void Transition_Function::validate(const Stack_Alphabet& stack_alphabet, const States& states,
 		const Final_States& final_states, bool& valid) const
 {
 	for(int i = 0; i < transitions.size(); ++i)
@@ -118,6 +118,7 @@ void Transition_Function::validate(const Stack_Alphabet& stack_alphabet, const S
 		}
 	}
 }
+
 void Transition_Function::view() const
 {
 	for(int i = 0; i < transitions.size(); ++i)
@@ -131,17 +132,20 @@ void Transition_Function::view() const
 	cout << "\n";
 }
 
-void Transition_Function::find_transition(string source_state, char read_character, char read_stack,
-				string& destination_state, string& push_stack, bool& found) const
+vector<Transition> Transition_Function::find_transitions(string source_state, char read_character, char read_stack, bool& found) const
 {
+	found = false;
+	vector<Transition> transition_list;
 	for(int i = 0; i < transitions.size(); ++i)
 		if((transitions[i].source_state() == source_state)
-		&& (transitions[i].read_character() == read_character))
+		&& (transitions[i].read_character() == read_character)
+	  && (transitions[i].read_stack_character() == read_stack))
 		{
-			destination_state = transitions[i].destination_state();
-			push_stack = transitions[i].push_stack_characters();
+			Transition temp(source_state, read_character, read_stack,
+												transitions[i].destination_state(),
+												transitions[i].push_stack_characters());
+			transition_list.push_back(temp);
 			found = true;
-			return;
 		}
-	found = false;
+	return transition_list;
 }

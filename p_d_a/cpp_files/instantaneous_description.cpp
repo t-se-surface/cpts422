@@ -37,7 +37,7 @@ void Instantaneous_Description::view(Configuration_Settings_Pointer configuratio
   }
 }
 
-void Instantaneous_Description::perform_transition(string destination_state, string push_string, Instantaneous_Description& instantaneous_description) const
+vector<Instantaneous_Description> Instantaneous_Description::perform_transition(string destination_state, string push_string, Instantaneous_Description& instantaneous_description) const
 {}
 
 void Instantaneous_Description::perform_lamda_transition(string destination_state, string push_string, Instantaneous_Description& instantaneous_description) const
