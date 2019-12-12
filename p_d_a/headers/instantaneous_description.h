@@ -22,10 +22,9 @@ class Instantaneous_Description
 
     public:
         Instantaneous_Description();
-        Instantaneous_Description(string initial_state, string input_string, char start_character, int pid);
+        Instantaneous_Description(string state, string input_string, string current_stack, int pid);
         void view(Configuration_Settings_Pointer configuration_settings_pointer) const;
-        vector<Instantaneous_Description> perform_transition(string destination_state, string push_string, Instantaneous_Description& instantaneous_description) const;
-        void perform_lamda_transition(string destination_state, string push_string, Instantaneous_Description& instantaneous_description) const;
+        vector<Instantaneous_Description> perform_transition(Transition_Function transition_function, bool& found) const;
         string state() const;
         char input_character() const;
         char top_of_stack() const;

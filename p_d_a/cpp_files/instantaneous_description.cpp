@@ -9,6 +9,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -37,11 +38,10 @@ void Instantaneous_Description::view(Configuration_Settings_Pointer configuratio
   }
 }
 
-vector<Instantaneous_Description> Instantaneous_Description::perform_transition(string destination_state, string push_string, Instantaneous_Description& instantaneous_description) const
-{}
+vector<Instantaneous_Description> Instantaneous_Description::perform_transition(Transition_Function transition_function, bool& found) const
+{
 
-void Instantaneous_Description::perform_lamda_transition(string destination_state, string push_string, Instantaneous_Description& instantaneous_description) const
-{}
+}
 
 string Instantaneous_Description::state() const
 {
@@ -58,10 +58,16 @@ char Instantaneous_Description::top_of_stack() const
 
 bool Instantaneous_Description::is_empty_remaining_input_string() const
 {
+  if(remaining_input_string.length() == 0)
+    return true;
+  else
     return false;
 }
 
 bool Instantaneous_Description::is_empty_stack() const
 {
+  if(stack.length() == 0)
+    return true;
+  else
     return false;
 }

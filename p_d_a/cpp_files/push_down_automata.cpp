@@ -175,38 +175,41 @@ void Push_Down_Automata::perform_transitions(int maximum_number_of_transitions)
 	bool found = false;
 	string destination_state;
 	char write_character;
-	
+	vector<Instantaneous_Description> temp_ID;
+	vector<Instantaneous_Description> result_ID;
+
 	for(int i = 0; i < maximum_number_of_transitions; ++i)
 	{
-		if(final_states.is_element(current_state))
+		for(vector<Instantaneous_Description>::iterator it = instantaneous_descriptions.begin(); it != instantaneous_descriptions.end(); ++it)
 		{
-			accepted = true;
-			operating = false;
-			return;
-		}
-		//transition_function.find_transition(current_state, tape.current_character(),
-				//destination_state, write_character, move_direction, found);
-		if(found)
-		{
-			try
+			if(final_states.is_element(it->state()))
 			{
-				//tape.update(write_character, move_direction);
-			}
-			catch(exception& error)
-			{
-				cout << "left move on first cell error.\n\n";
+				accepted = true;
+				operating = false;
 				return;
 			}
-			current_state = destination_state;
-			++number_of_transitions;
-		}
-		else
-		{
-			rejected = true;
-			operating = false;
-			return;
+
+			temp_ID = it->perform_transition(transition_function, found);
+
+			for(vector<Instantaneous_Description>::iterator it2 = temp_ID.begin(); it2 != temp_ID.end(); ++it2)
+			{
+				result_ID.push_back((*it2));
+			}
+
+			if(found)
+			{
+				current_state = destination_state;
+				++number_of_transitions;
+			}
+			else
+			{
+				rejected = true;
+				operating = false;
+				return;
+			}
 		}
 	}
+	instantaneous_descriptions = result_ID;
 }
 
 void Push_Down_Automata::terminate_operation()
