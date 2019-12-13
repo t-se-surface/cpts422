@@ -28,9 +28,6 @@ class Push_Down_Automata
 		vector<string> description;
 		//@param list of strings to hold description from definition file
 
-		//Tape tape;
-		//@param creates instance of tape
-
 		vector<Instantaneous_Description> instantaneous_descriptions;
 		//@param list of all instantaneous_descriptions
 
@@ -88,6 +85,7 @@ class Push_Down_Automata
 	public:
 
 		int crashes;
+		//@param counts how many times the running pda crashes
 
 		Push_Down_Automata(string definition_file_name);
 		//@param this function takes in a string definition file name

@@ -161,15 +161,16 @@ void Push_Down_Automata::initialize(string input_string)
 void Push_Down_Automata::perform_transitions(int maximum_number_of_transitions)
 {
 	bool found = false;
-	bool increment = false;
+	int increment = 0;
 	string destination_state;
 	char write_character;
 	vector<Instantaneous_Description> temp_ID;
 	vector<Instantaneous_Description> result_ID;
+	vector<Instantaneous_Description>::iterator it;
 
-	vector<Instantaneous_Description>::iterator it = instantaneous_descriptions.begin();
 	for(int i = 0; i < maximum_number_of_transitions; ++i)
 	{
+		it = instantaneous_descriptions.begin();
 		result_ID.clear();
 		for(int i = 0; i < instantaneous_descriptions.size(); ++i)
 		{
@@ -189,10 +190,11 @@ void Push_Down_Automata::perform_transitions(int maximum_number_of_transitions)
 					result_ID.push_back((*it2));
 				}
 				current_state = destination_state;
-				if (increment == false)
+				if (increment < maximum_number_of_transitions)
 				{
 					increment = true;
 					++number_of_transitions;
+					++increment;
 				}
 			}
 			else
@@ -203,23 +205,23 @@ void Push_Down_Automata::perform_transitions(int maximum_number_of_transitions)
 			}
 			++it;
 		}
-	}
-	instantaneous_descriptions = result_ID;
-	for(vector<Instantaneous_Description>::iterator it = instantaneous_descriptions.begin(); it != instantaneous_descriptions.end(); ++it)
-	{
-		if(final_states.is_element(it->state()) && it->is_empty_remaining_input_string())
+		instantaneous_descriptions = result_ID;
+		for(vector<Instantaneous_Description>::iterator it = instantaneous_descriptions.begin(); it != instantaneous_descriptions.end(); ++it)
 		{
-			accepted = true;
+			if(final_states.is_element(it->state()) && it->is_empty_remaining_input_string())
+			{
+				accepted = true;
+				operating = false;
+				return;
+			}
+		}
+
+		if (instantaneous_descriptions.size() == 0)
+		{
+			rejected = true;
 			operating = false;
 			return;
 		}
-	}
-
-	if (instantaneous_descriptions.size() == 0)
-	{
-		rejected = true;
-		operating = false;
-		return;
 	}
 }
 

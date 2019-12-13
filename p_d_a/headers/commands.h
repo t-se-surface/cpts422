@@ -32,13 +32,16 @@ class Commands
 		//@param this initiates the run of the program
 
 		bool valid;
+		//@param this checks if the loaded pda is validate
 
 		int current_running_pda;
+		//@param this keeps track of the number of the current running pda_list
 
 		bool is_input_string_changed;
 		//@param this sets when the list of inputs strings is altered
 
 		Configuration_Settings configuration_settings;
+		//@param an instance of the created configuration settings
 
 		string name_of_push_down_automata;
 		//@param stores the name of turing machine for later use
@@ -48,9 +51,6 @@ class Commands
 
 		vector<Push_Down_Automata> pda_list;
 		//@Param this provides severavl instances of a pda
-
-		//Push_Down_Automata push_down_automata;
-		//@param this provides the instance of the turing machine itself
 
 	public:
 		Commands(string file_name);
@@ -62,12 +62,6 @@ class Commands
 		//@param this function takes no arguments
 		//@func this function returns the value of the private running boolean
 		//@return this function returns a bool
-
-		// void delete_helper();
-		//@param this function takes no parameters
-		//@func this function allows the user to delete a string from the list of
-		//input strings
-		//@return this function has no return
 
 		void exit_helper();
 		//@param this function takes no parameters

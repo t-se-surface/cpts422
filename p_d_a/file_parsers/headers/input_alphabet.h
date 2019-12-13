@@ -24,7 +24,7 @@ class Input_Alphabet
 {
 	private:
 		vector<char> alphabet;
-		//@param stores the characters of the alphabet associated with the 
+		//@param stores the characters of the alphabet associated with the
 		//input alphabet
 	public:
 		Input_Alphabet();
@@ -35,19 +35,12 @@ class Input_Alphabet
 		void load(ifstream& definition, bool& valid);
 		//@param this function takes a reference to an ifstream definition, and
 		//a reference to a bool valid
-		//@func this function loads the characters form the defintion file into 
+		//@func this function loads the characters form the defintion file into
 		//the alphabet vector
 		//@return this function has no return
 
-		//void validate(const Tape_Alphabet& tape_alphabet,  bool& valid) const;
-		//@param this function takes a reference to a tape_alphabet, and a 
-		//reference to a boolean valid
-		//@func this function uses the tape_alphabet to validate if every element
-		//of the input alphabet is also a member of the tape_alphabet
-		//@return this function has no return 
-
 		void view() const;
-		//@param this function takes no parameters 
+		//@param this function takes no parameters
 		//@func this function allows the user to view the input alphabet characters
 		//in original format
 		//@return this function has no return

@@ -52,6 +52,9 @@ class Transition
 		//@return this function returns a character
 
 		char read_stack_character() const;
+		//@param this function takes in no parameters
+		//@func this function returns the value of the stack character
+		//@return this function returns a char
 
 		string destination_state() const;
 		//@param this function takes in no parameters
@@ -59,6 +62,9 @@ class Transition
 		//@return this function returns a string
 
 		string push_stack_characters() const;
+		//@param this function takes in no parameters
+		//@func this function returns a string to be added on the stack
+		//@return this function returns a string
 
 };
 #endif

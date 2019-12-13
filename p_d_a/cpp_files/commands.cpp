@@ -143,10 +143,10 @@ void Commands::run_helper()
 		}
 		pda_list[current_running_pda].initialize(input_strings[validation-1]);
 		cout << "\n";
-    	cout << pda_list[current_running_pda].total_number_of_transitions() << endl;
+    cout << pda_list[current_running_pda].total_number_of_transitions() << endl;
 		pda_list[current_running_pda].view_instantaneous_description(configuration_settings.truncation_value());
 		pda_list[current_running_pda].perform_transitions(configuration_settings.number_of_transitions());
-    	cout << pda_list[current_running_pda].total_number_of_transitions() << endl;
+    cout << pda_list[current_running_pda].total_number_of_transitions() << endl;
 		pda_list[current_running_pda].view_instantaneous_description(configuration_settings.truncation_value());
 		cout << "\n";
 		return;
@@ -154,25 +154,29 @@ void Commands::run_helper()
 	else if((pda_list[current_running_pda].is_used()) && (pda_list[current_running_pda].is_operating()))
 	{
 		pda_list[current_running_pda].perform_transitions(configuration_settings.number_of_transitions());
-    	cout << pda_list[current_running_pda].total_number_of_transitions() << endl;
+    cout << pda_list[current_running_pda].total_number_of_transitions() << endl;
 		pda_list[current_running_pda].view_instantaneous_description(configuration_settings.truncation_value());
 		cout << "\n";
 		if(pda_list[current_running_pda].is_accepted_input_string())
 		{
 			cout << "the string " << pda_list[current_running_pda].input_string() << " has been accepted in ";
-	       	cout << pda_list[current_running_pda].total_number_of_transitions() << " transitions.\n\n";
+	    cout << pda_list[current_running_pda].total_number_of_transitions() << " transitions, ";
+      cout << "with " << pda_list[current_running_pda].crashes << " crashes. \n\n";
+
 			return;
 		}
 		if(pda_list[current_running_pda].is_rejected_input_string())
 		{
-			cout << "no transition could be performed the string ";
+			cout << "no transition could be performed on the string ";
 			cout << pda_list[current_running_pda].input_string() << " is rejected in ";
-			cout << pda_list[current_running_pda].total_number_of_transitions() << " transitions.\n\n";
+			cout << pda_list[current_running_pda].total_number_of_transitions() << " transitions, ";
+      cout << "with " << pda_list[current_running_pda].crashes << " crashes. \n\n";
 			return;
 		}
 		return;
 	}
 }
+
 
 void Commands::show_helper() const
 {
