@@ -102,7 +102,7 @@ class Push_Down_Automata
 		//with mathmatical intention, using greek symbols
 		//@return this function is void
 
-		void view_instantaneous_description(int maximum_number_of_cells) const;
+		void view_instantaneous_description(int maximum_number_of_cells);
 		//@param this function takes an int maximum number of cells
 		//@func this function provides to the user the instantaneous description
 		//@return this function is void

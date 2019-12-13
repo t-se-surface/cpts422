@@ -120,13 +120,16 @@ void Push_Down_Automata::view_definition() const
 	final_states.view();
 }
 
-void Push_Down_Automata::view_instantaneous_description(int maximum_number_of_cells) const
+void Push_Down_Automata::view_instantaneous_description(int maximum_number_of_cells)
 {
+	int truncation_value = 20;
+
 	if((used || operating) && (original_input_string != " "))
 	{
-		cout << "   " << number_of_transitions << ".";
-		cout << "[" << current_state << "]";
-		cout <<"\n";
+		for(vector<Instantaneous_Description>::iterator it = instantaneous_descriptions.begin(); it != instantaneous_descriptions.end(); ++it)
+		{
+			it->view(20);
+		}
 	}
 	else
 	{
@@ -136,7 +139,6 @@ void Push_Down_Automata::view_instantaneous_description(int maximum_number_of_ce
 
 void Push_Down_Automata::initialize(string input_string)
 {
-
 	if(!used || !operating)
 	{
 		original_input_string = input_string;
@@ -148,6 +150,9 @@ void Push_Down_Automata::initialize(string input_string)
 			used = !used;
 		if(!operating)
 			operating = !operating;
+
+		Instantaneous_Description temp(initial_state, input_string, start_character, 0);
+		instantaneous_descriptions.push_back(temp);
 	}
 }
 

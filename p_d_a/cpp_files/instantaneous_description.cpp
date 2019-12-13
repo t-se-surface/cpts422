@@ -27,7 +27,7 @@ Instantaneous_Description::Instantaneous_Description(string initial_state, strin
   stack = current_stack;
 }
 
-void Instantaneous_Description::view(Configuration_Settings_Pointer configuration_settings_pointer) const
+void Instantaneous_Description::view(int truncation_value) const
 {
   //TODO Add check for truncation based on passed in configuration settings.
   // if (remaining_input_string.length() <= configuration_settings_pointer->maximum_truncation_value && stack.length() <= configuration_settings_pointer->maximum_truncation_value)
@@ -49,7 +49,7 @@ vector<Instantaneous_Description> Instantaneous_Description::perform_transition(
 
   temp_input_string = remaining_input_string;
 
-  temp_input_string = temp_input_string.erase(temp_input_string[0]);
+  temp_input_string.erase(temp_input_string.begin());
 
   transitions = transition_function.find_transitions(state(), input_character(), top_of_stack(), found);
 

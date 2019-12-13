@@ -133,7 +133,7 @@ void Commands::run_helper()
 		}
 		catch(exception& error)
 		{
-			cout << "\ncoud not convert " << error.what() << ".\n\n";
+			cout << "\ncould not convert " << error.what() << ".\n\n";
 			return;
 		}
 		if(validation > input_strings.size())
@@ -143,15 +143,18 @@ void Commands::run_helper()
 		}
 		push_down_automata.initialize(input_strings[validation-1]);
 		cout << "\n";
+    cout << push_down_automata.total_number_of_transitions() << endl;
 		push_down_automata.view_instantaneous_description(configuration_settings.truncation_value());
 		push_down_automata.perform_transitions(configuration_settings.number_of_transitions());
+    cout << push_down_automata.total_number_of_transitions() << endl;
 		push_down_automata.view_instantaneous_description(configuration_settings.truncation_value());
 		cout << "\n";
 		return;
 	}
-	if((push_down_automata.is_used()) && (push_down_automata.is_operating()))
+	else if((push_down_automata.is_used()) && (push_down_automata.is_operating()))
 	{
 		push_down_automata.perform_transitions(configuration_settings.number_of_transitions());
+    cout << push_down_automata.total_number_of_transitions() << endl;
 		push_down_automata.view_instantaneous_description(configuration_settings.truncation_value());
 		cout << "\n";
 		if(push_down_automata.is_accepted_input_string())
@@ -222,13 +225,13 @@ void Commands::close_helper()
 
 void Commands::display_helper()
 {
-	configuration_settings.change_complete_paths();
+	configuration_settings.show_complete_paths();
 	cout << "display complete path is set to ";
 	if(configuration_settings.show_complete_paths())
 		cout << "true\n\n";
 	else
 		cout << "false\n\n";
-		
+
 }
 
 void Commands::view_helper() const
