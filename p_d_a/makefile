@@ -46,6 +46,8 @@ instantaneous_description.o: cpp_files/instantaneous_description.cpp headers/ins
 clean:
 	rm *.o
 	rm headers/*.h.gch
+	rm validation/headers/*.h.gch
+	rm file_parsers/headers/*.h.gch
 
 immaculate:
 	rm -f tmapp

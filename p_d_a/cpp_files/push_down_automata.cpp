@@ -66,7 +66,6 @@ Push_Down_Automata::Push_Down_Automata(string definition_file_name): description
 		}
 		input_alphabet.load(definition, valid);
 		stack_alphabet.load(definition, valid);
-		//tape_alphabet.load(definition, valid);
 		transition_function.load(definition, valid);
 		if((definition >> value) && (to_uppercase(value) == "INITIAL_STATE:"))
 		{
@@ -78,13 +77,6 @@ Push_Down_Automata::Push_Down_Automata(string definition_file_name): description
 				valid = false;
 			}
 		}
-		/*if((definition >> value) && (to_uppercase(value) == "BLANK_CHARACTER:"))
-			tape.load(definition, valid);
-		else
-		{
-			cout << "\nkeyword \"blank_character:\" could not be found.\n\n";
-			valid = false;
-		}*/
 		if((definition >> value) && (to_uppercase(value) == "START_CHARACTER:"))
 		{
 			if((definition >> value) && (is_valid_string(value)))
@@ -104,10 +96,7 @@ Push_Down_Automata::Push_Down_Automata(string definition_file_name): description
 		}
 		if(valid)
 		{
-			//input_alphabet.validate(tape_alphabet, valid);
 			final_states.validate(states, valid);
-			//tape.validate(input_alphabet, tape_alphabet, valid);
-			//transition_function.validate(tape_alphabet, states, final_states, valid);
 		}
 		if(valid)
 			cout << "\n" << definition_file_name << " loaded successfully.\n\n";
@@ -126,22 +115,17 @@ void Push_Down_Automata::view_definition() const
 		cout << description[i] << "\n";
 	states.view();
 	input_alphabet.view();
-	//tape_alphabet.view();
 	transition_function.view();
 	cout << "q0 = " << initial_state << "\n\n";
-	//tape.view();
 	final_states.view();
 }
 
 void Push_Down_Automata::view_instantaneous_description(int maximum_number_of_cells) const
 {
-	//Needs to be fixed for PDA
 	if((used || operating) && (original_input_string != " "))
 	{
 		cout << "   " << number_of_transitions << ".";
-		//cout << tape.left(maximum_number_of_cells);
 		cout << "[" << current_state << "]";
-		//cout << tape.right(maximum_number_of_cells);
 		cout <<"\n";
 	}
 	else
@@ -155,10 +139,6 @@ void Push_Down_Automata::initialize(string input_string)
 
 	if(!used || !operating)
 	{
-		//if(!(input_string == "\\"))
-		//	tape.initialize(input_string);
-		//else
-		//	tape.initialize(" ");
 		original_input_string = input_string;
 		accepted = false;
 		rejected = false;

@@ -31,7 +31,7 @@ void Final_States::load(ifstream& definition, bool& valid)
 			names.push_back(value);
 		else
 		{
-			cout << "final state " << value << "is not a valid final state.\n\n";
+			cout << "final state " << value << " is not a valid final state.\n\n";
 			valid = false;
 		}
 	}

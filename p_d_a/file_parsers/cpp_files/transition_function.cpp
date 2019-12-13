@@ -124,10 +124,10 @@ void Transition_Function::view() const
 	for(int i = 0; i < transitions.size(); ++i)
 	{
 		cout << "\u03B4 (" << transitions[i].source_state();
-		cout << ", " << transitions[i].read_character() << ")";
-		cout << " = (" << transitions[i].destination_state();
-		//cout << ", " << transitions[i].write_character();
-		//cout << ", " << transitions[i].move_direction() << ")\n";
+		cout << ", " << transitions[i].read_character() << ", ";
+		cout << transitions[i].read_stack_character() << ") = ";
+		cout << "(" << transitions[i].destination_state();
+		cout << ", " << transitions[i].push_stack_characters() << ")\n";
 	}
 	cout << "\n";
 }

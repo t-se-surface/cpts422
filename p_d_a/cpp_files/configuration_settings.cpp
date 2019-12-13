@@ -44,10 +44,10 @@ Configuration_Settings::Configuration_Settings(string definition_file_name, bool
         definition >> value;
         if(value[14] == '=')
         {
-            value = value.substr(20, value.length() + 1);       
+            value = value.substr(15, value.length() + 1);       
             if(to_uppercase(value) == "NO")
                 display_complete_paths = false;
-            if(to_uppercase(value) == "YES")
+            else if(to_uppercase(value) == "YES")
                 display_complete_paths = true;
             else
             {
@@ -73,3 +73,8 @@ int Configuration_Settings::truncation_value() const
 
 bool Configuration_Settings::show_complete_paths() const
 { return display_complete_paths; }
+
+void Configuration_Settings::change_complete_paths()
+{
+    display_complete_paths = !display_complete_paths;
+}

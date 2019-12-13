@@ -21,6 +21,6 @@ StacK_aLPHaBET: a b X Y - 3r [] <>  TRANsITIoN_FUnCTiON:
  s1 b Y     s1 \
  s1 \ Z     s2 \
 
-IniTIaL_sTaTE: s<0 [] BLaNK_CHaRaCTeR: - \\ B
+IniTIaL_sTaTE: s<0 [] 
 
 FINaL_STaTeS: s4 Y [] <>  states

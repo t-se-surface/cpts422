@@ -66,16 +66,16 @@ void Commands::exit_helper()
 
 void Commands::help_helper() const
 {
-  cout << "(o)pen		  open new PDA\n";
-  cout << "(c)lose		close running PDA\n";
-	cout << "dis(p)lay	display paths through pda\n";
-  cout << "e(x)it		  exit application\n";
+ 	cout << "(o)pen		  open new PDA\n";
+ 	cout << "(c)lose		  close running PDA\n";
+	cout << "dis(p)lay	  display paths through pda\n";
+  	cout << "e(x)it		  exit application\n";
 	cout << "(h)elp		  help user\n";
 	cout << "(i)nsert	  insert new input string into list\n";
 	cout << "(l)ist		  list input strings\n";
 	cout << "(r)un		  run turing machine on input string\n";
 	cout << "sho(w)		  show status of application\n";
-	cout << "(v)iew		  view turing machine\n";
+	cout << "(v)iew		  view push down automata\n";
 	cout << "(q)uit		  quit operation of the turing machine on input string\n\n";
 }
 
@@ -173,16 +173,16 @@ void Commands::run_helper()
 
 void Commands::show_helper() const
 {
-	cout << "CPTS350, SEM: 2, YEAR: 2019\n";
-	cout <<	"INST: NIEL CORRIGAN.\n";
-	cout << "AUTH: TREVOR SURFACE\n";
+	cout << "CPTS422, SEM: FALL, YEAR: 2019\n";
+	cout <<	"INST: LUIS DEL LA TORRE.\n";
+	cout << "AUTH: BOBBY THOMPSON, ERIC ENGEL, MIKE ROPER, TREVOR SURFACE\n";
 	cout << "V. 1.0.1\n\n";
 	cout << "Maximum transitions set " << configuration_settings.number_of_transitions() << ".\n";
 	cout << "truncate value set " << configuration_settings.truncation_value() << ".\n\n";
-	cout << "TM::" << name_of_push_down_automata << "\n\n";
+	cout << "PDA::" << name_of_push_down_automata << "\n\n";
 	if(!push_down_automata.is_used())
 	{
-		cout << "the turing machine has not been used.\n\n";
+		cout << "the push down automata has not been used.\n\n";
 	}
 	if((push_down_automata.is_used()) && (push_down_automata.is_operating()))
 	{
@@ -222,7 +222,13 @@ void Commands::close_helper()
 
 void Commands::display_helper()
 {
-
+	configuration_settings.change_complete_paths();
+	cout << "display complete path is set to ";
+	if(configuration_settings.show_complete_paths())
+		cout << "true\n\n";
+	else
+		cout << "false\n\n";
+		
 }
 
 void Commands::view_helper() const

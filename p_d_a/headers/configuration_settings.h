@@ -23,6 +23,7 @@ class Configuration_Settings
         int truncation_value() const;
         void set_truncation_value(int value);
         bool show_complete_paths() const;
+        void change_complete_paths();
 };
 typedef Configuration_Settings *Configuration_Settings_Pointer;
 
