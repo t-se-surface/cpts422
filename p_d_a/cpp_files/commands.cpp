@@ -22,12 +22,12 @@
 
 using namespace std;
 
-Commands::Commands(string file_name): valid(true), configuration_settings(file_name, valid),
-       			input_strings({}), running(true), push_down_automata(file_name),
+Commands::Commands(string file_name): valid(true), current_running_pda(0), configuration_settings(file_name, valid),
+       			input_strings({}), running(true), pda_list({Push_Down_Automata(file_name)}),
 			name_of_push_down_automata(file_name), is_input_string_changed(false)
 {
 	ifstream definition;
-	if(push_down_automata.is_valid_definition() && valid)
+	if(pda_list[current_running_pda].is_valid_definition() && valid)
 	{
 		file_name.append(".str");
 		string value;
@@ -45,7 +45,7 @@ Commands::Commands(string file_name): valid(true), configuration_settings(file_n
 
 bool Commands::is_running() const
 {
-	if(push_down_automata.is_valid_definition())
+	if(pda_list[current_running_pda].is_valid_definition())
 		return running;
 }
 
@@ -89,7 +89,7 @@ void Commands::insert_helper()
 		cout << "\n";
 		return;
 	}
-	if(!push_down_automata.is_valid_input_string(value))
+	if(!pda_list[current_running_pda].is_valid_input_string(value))
 	{
 		cout << "\nstring " << value << " was not added to the list of input strings.\n\n";
 	}
@@ -118,7 +118,7 @@ void Commands::run_helper()
 {
 	string input;
 	int validation = -1;
-	if((!push_down_automata.is_used()) || (!push_down_automata.is_operating()))
+	if((!pda_list[current_running_pda].is_used()) || (!pda_list[current_running_pda].is_operating()))
 	{
 		cout << "please indicate a string to run by number: ";
 		getline(cin, input);
@@ -141,33 +141,33 @@ void Commands::run_helper()
 			cout << "\ninput out of bounds of list\n\n";
 			return;
 		}
-		push_down_automata.initialize(input_strings[validation-1]);
+		pda_list[current_running_pda].initialize(input_strings[validation-1]);
 		cout << "\n";
-    cout << push_down_automata.total_number_of_transitions() << endl;
-		push_down_automata.view_instantaneous_description(configuration_settings.truncation_value());
-		push_down_automata.perform_transitions(configuration_settings.number_of_transitions());
-    cout << push_down_automata.total_number_of_transitions() << endl;
-		push_down_automata.view_instantaneous_description(configuration_settings.truncation_value());
+    	cout << pda_list[current_running_pda].total_number_of_transitions() << endl;
+		pda_list[current_running_pda].view_instantaneous_description(configuration_settings.truncation_value());
+		pda_list[current_running_pda].perform_transitions(configuration_settings.number_of_transitions());
+    	cout << pda_list[current_running_pda].total_number_of_transitions() << endl;
+		pda_list[current_running_pda].view_instantaneous_description(configuration_settings.truncation_value());
 		cout << "\n";
 		return;
 	}
-	else if((push_down_automata.is_used()) && (push_down_automata.is_operating()))
+	else if((pda_list[current_running_pda].is_used()) && (pda_list[current_running_pda].is_operating()))
 	{
-		push_down_automata.perform_transitions(configuration_settings.number_of_transitions());
-    cout << push_down_automata.total_number_of_transitions() << endl;
-		push_down_automata.view_instantaneous_description(configuration_settings.truncation_value());
+		pda_list[current_running_pda].perform_transitions(configuration_settings.number_of_transitions());
+    	cout << pda_list[current_running_pda].total_number_of_transitions() << endl;
+		pda_list[current_running_pda].view_instantaneous_description(configuration_settings.truncation_value());
 		cout << "\n";
-		if(push_down_automata.is_accepted_input_string())
+		if(pda_list[current_running_pda].is_accepted_input_string())
 		{
-			cout << "the string " << push_down_automata.input_string() << " has been accepted in ";
-	       		cout << push_down_automata.total_number_of_transitions() << " transitions.\n\n";
+			cout << "the string " << pda_list[current_running_pda].input_string() << " has been accepted in ";
+	       	cout << pda_list[current_running_pda].total_number_of_transitions() << " transitions.\n\n";
 			return;
 		}
-		if(push_down_automata.is_rejected_input_string())
+		if(pda_list[current_running_pda].is_rejected_input_string())
 		{
 			cout << "no transition could be performed the string ";
-			cout << push_down_automata.input_string() << " is rejected in ";
-			cout << push_down_automata.total_number_of_transitions() << " transitions.\n\n";
+			cout << pda_list[current_running_pda].input_string() << " is rejected in ";
+			cout << pda_list[current_running_pda].total_number_of_transitions() << " transitions.\n\n";
 			return;
 		}
 		return;
@@ -182,45 +182,122 @@ void Commands::show_helper() const
 	cout << "V. 1.0.1\n\n";
 	cout << "Maximum transitions set " << configuration_settings.number_of_transitions() << ".\n";
 	cout << "truncate value set " << configuration_settings.truncation_value() << ".\n\n";
-	cout << "PDA::" << name_of_push_down_automata << "\n\n";
-	if(!push_down_automata.is_used())
+	cout << "PDA::" << name_of_push_down_automata << "-" << current_running_pda << "\n\n";
+	if(!pda_list[current_running_pda].is_used())
 	{
 		cout << "the push down automata has not been used.\n\n";
 	}
-	if((push_down_automata.is_used()) && (push_down_automata.is_operating()))
+	if((pda_list[current_running_pda].is_used()) && (pda_list[current_running_pda].is_operating()))
 	{
-		cout << "input string: " << push_down_automata.input_string() << "\n";
-		cout << "transitions: " << push_down_automata.total_number_of_transitions() << "\n\n";
+		cout << "input string: " << pda_list[current_running_pda].input_string() << "\n";
+		cout << "transitions: " << pda_list[current_running_pda].total_number_of_transitions() << "\n\n";
 	}
-	if((push_down_automata.is_used()) && (!push_down_automata.is_operating()))
+	if((pda_list[current_running_pda].is_used()) && (!pda_list[current_running_pda].is_operating()))
 	{
-		cout << "input string: " << push_down_automata.input_string();
+		cout << "input string: " << pda_list[current_running_pda].input_string();
 		cout << " was";
 
-		if(push_down_automata.is_accepted_input_string())
+		if(pda_list[current_running_pda].is_accepted_input_string())
 		{
 			cout << " accepted";
 		}
-		if(push_down_automata.is_rejected_input_string())
+		if(pda_list[current_running_pda].is_rejected_input_string())
 		{
 			cout << " rejected";
 		}
-		if((!push_down_automata.is_accepted_input_string()) && (!push_down_automata.is_rejected_input_string()))
+		if((!pda_list[current_running_pda].is_accepted_input_string()) && (!pda_list[current_running_pda].is_rejected_input_string()))
 		{
 			cout << " neither accepted or rejected";
 		}
- 		cout << " in " << push_down_automata.total_number_of_transitions() << " transitions.\n\n";
+ 		cout << " in " << pda_list[current_running_pda].total_number_of_transitions() << " transitions.\n\n";
 	}
 }
 
 void Commands::open_helper()
 {
-
+	string value;
+	int validation = -1;
+	for(int i = 0; i < pda_list.size(); ++i)
+	{
+		cout << "\t" << i + 1 << ". ";
+		cout << name_of_push_down_automata << "-" << i;
+		cout << "\n";
+	}
+	cout << "\nplease select a pda: ";
+	getline(cin, value);
+	if(value.empty())
+	{
+		cout << "\n";
+		return;
+	}
+	try
+	{
+		validation = is_valid_number(value);
+	}
+	catch(exception& error)
+	{
+		cout << "\ncould not convert " << error.what() << ".\n\n";
+		return;
+	}
+	if (validation > pda_list.size() + 1)
+	{
+		cout << "please provide an integer within the bounds, or one larger to create new pda\n\n";
+		return;
+	}
+	if (validation == pda_list.size() + 1)
+	{
+		pda_list.push_back(Push_Down_Automata(name_of_push_down_automata));
+		cout << "new pda created!\n\n";
+		return;
+	}
+	if (validation < pda_list.size() + 1)
+	{
+		current_running_pda = validation - 1;
+		cout << "pda: " << name_of_push_down_automata;
+		cout << "-" << current_running_pda << "\n\n";
+		return;
+	}
 }
 
 void Commands::close_helper()
 {
-
+	string value;
+	int validation = -1;
+	for(int i = 0; i < pda_list.size(); ++i)
+	{
+		cout << "\t" << i + 1 << ". ";
+		cout << name_of_push_down_automata << "-" << i;
+		cout << "\n";
+	}
+	cout << "\nplease select a pda: ";
+	getline(cin, value);
+	if(value.empty())
+	{
+		cout << "\n";
+		return;
+	}
+	try
+	{
+		validation = is_valid_number(value);
+	}
+	catch(exception& error)
+	{
+		cout << "\ncould not convert " << error.what() << ".\n\n";
+		return;
+	}
+	if (validation > pda_list.size())
+	{
+		cout << "please provide an integer within the bound\n";
+		return;
+	}
+	if(pda_list.size() == 1)
+	{
+		cout << "there needs to be at least one pda. close canceled\n\n";
+		return;
+	}
+	pda_list.erase(pda_list.begin() + (validation - 1));
+	cout << "\npda: " << name_of_push_down_automata << "-" << validation - 1;
+	cout << " deleted\n\n";
 }
 
 void Commands::display_helper()
@@ -236,12 +313,12 @@ void Commands::display_helper()
 
 void Commands::view_helper() const
 {
-	push_down_automata.view_definition();
+	pda_list[current_running_pda].view_definition();
 }
 
 void Commands::quit_helper()
 {
-	push_down_automata.terminate_operation();
+	pda_list[current_running_pda].terminate_operation();
 }
 
 bool Commands::list_check(string& value)

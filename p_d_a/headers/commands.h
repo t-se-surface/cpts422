@@ -33,6 +33,8 @@ class Commands
 
 		bool valid;
 
+		int current_running_pda;
+
 		bool is_input_string_changed;
 		//@param this sets when the list of inputs strings is altered
 
@@ -44,7 +46,10 @@ class Commands
 		vector<string> input_strings;
 		//@param stores the list of input string from the .str file
 
-		Push_Down_Automata push_down_automata;
+		vector<Push_Down_Automata> pda_list;
+		//@Param this provides severavl instances of a pda
+
+		//Push_Down_Automata push_down_automata;
 		//@param this provides the instance of the turing machine itself
 
 	public:
