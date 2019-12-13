@@ -1,5 +1,4 @@
-This PDA accepts the language of one or more a's followed by the 
-same number of b's.
+This PDA accepts the language of odd palindromes.
 
 STATES: s0 s1 s2
 
@@ -7,7 +6,7 @@ INPUT_ALPHABET: a b
 
 STACK_ALPHABET: X Y Z
 
-TRANSITION_FUNCTION: 
+TRANSITION_FUNCTION:
  s0 a X     s0 XX
  s0 a X     s1 X
  s0 a Y     s0 XY

@@ -138,7 +138,7 @@ vector<Transition> Transition_Function::find_transitions(string source_state, ch
 	vector<Transition> transition_list;
 	for(int i = 0; i < transitions.size(); ++i)
 		if((transitions[i].source_state() == source_state)
-		&& (transitions[i].read_character() == read_character)
+		&& (transitions[i].read_character() == read_character || (transitions[i].read_character() == '\\' && read_character == '\0'))
 	  && (transitions[i].read_stack_character() == read_stack))
 		{
 			Transition temp(source_state, read_character, read_stack,

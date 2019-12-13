@@ -151,7 +151,9 @@ void Push_Down_Automata::initialize(string input_string)
 		if(!operating)
 			operating = !operating;
 
+
 		Instantaneous_Description temp(initial_state, input_string, start_character, 0);
+		instantaneous_descriptions.clear();
 		instantaneous_descriptions.push_back(temp);
 	}
 }
@@ -159,16 +161,19 @@ void Push_Down_Automata::initialize(string input_string)
 void Push_Down_Automata::perform_transitions(int maximum_number_of_transitions)
 {
 	bool found = false;
+	bool increment = false;
 	string destination_state;
 	char write_character;
 	vector<Instantaneous_Description> temp_ID;
 	vector<Instantaneous_Description> result_ID;
 
+	vector<Instantaneous_Description>::iterator it = instantaneous_descriptions.begin();
 	for(int i = 0; i < maximum_number_of_transitions; ++i)
 	{
-		for(vector<Instantaneous_Description>::iterator it = instantaneous_descriptions.begin(); it != instantaneous_descriptions.end(); ++it)
+		result_ID.clear();
+		for(int i = 0; i < instantaneous_descriptions.size(); ++i)
 		{
-			if(final_states.is_element(it->state()))
+			if(final_states.is_element(it->state()) && it->is_empty_remaining_input_string())
 			{
 				accepted = true;
 				operating = false;
@@ -177,25 +182,45 @@ void Push_Down_Automata::perform_transitions(int maximum_number_of_transitions)
 
 			temp_ID = it->perform_transition(transition_function, crashes, found);
 
-			for(vector<Instantaneous_Description>::iterator it2 = temp_ID.begin(); it2 != temp_ID.end(); ++it2)
-			{
-				result_ID.push_back((*it2));
-			}
-
 			if(found)
 			{
+				for(vector<Instantaneous_Description>::iterator it2 = temp_ID.begin(); it2 != temp_ID.end(); ++it2)
+				{
+					result_ID.push_back((*it2));
+				}
 				current_state = destination_state;
-				++number_of_transitions;
+				if (increment == false)
+				{
+					increment = true;
+					++number_of_transitions;
+				}
 			}
 			else
 			{
-				rejected = true;
-				operating = false;
-				return;
+				cout << "Crash happens!!" << endl;
+				crashes++;
+				instantaneous_descriptions.erase(it);
 			}
+			++it;
 		}
 	}
 	instantaneous_descriptions = result_ID;
+	for(vector<Instantaneous_Description>::iterator it = instantaneous_descriptions.begin(); it != instantaneous_descriptions.end(); ++it)
+	{
+		if(final_states.is_element(it->state()) && it->is_empty_remaining_input_string())
+		{
+			accepted = true;
+			operating = false;
+			return;
+		}
+	}
+
+	if (instantaneous_descriptions.size() == 0)
+	{
+		rejected = true;
+		operating = false;
+		return;
+	}
 }
 
 void Push_Down_Automata::terminate_operation()

@@ -46,22 +46,39 @@ vector<Instantaneous_Description> Instantaneous_Description::perform_transition(
   vector<Transition> transitions;
   string temp_input_string;
   string temp_stack;
+  Instantaneous_Description garbage(temp_stack, temp_stack, temp_stack, 5);
 
-  temp_input_string = remaining_input_string;
-
-  temp_input_string.erase(temp_input_string.begin());
+  if (remaining_input_string.length() != 0)
+  {
+    temp_input_string = remaining_input_string;
+    temp_input_string.erase(temp_input_string.begin());
+  }
+  else
+    temp_input_string = '\0';
 
   transitions = transition_function.find_transitions(state(), input_character(), top_of_stack(), found);
 
-  for(vector<Transition>::iterator it = transitions.begin(); it != transitions.end(); ++it)
+  if (found)
   {
-    temp_stack = stack;
-    temp_stack = temp_stack.insert(0, it->push_stack_characters());
+    for(vector<Transition>::iterator it = transitions.begin(); it != transitions.end(); ++it)
+    {
+      string stack_characters = it->push_stack_characters();
 
-    Instantaneous_Description t_ID(it->destination_state(), temp_input_string, temp_stack, id);
-    temp_IDs.push_back(t_ID);
+      temp_stack = stack;
+      temp_stack.erase(0, 1);
+      if (stack_characters[0] != '\\')
+        temp_stack.insert(0, it->push_stack_characters());
+
+      Instantaneous_Description t_ID(it->destination_state(), temp_input_string, temp_stack, id);
+      temp_IDs.push_back(t_ID);
+    }
+    return temp_IDs;
   }
-  return temp_IDs;
+  else
+  {
+    temp_IDs.push_back(garbage);
+    return temp_IDs;
+  }
 }
 
 string Instantaneous_Description::state() const
@@ -71,7 +88,10 @@ string Instantaneous_Description::state() const
 
 char Instantaneous_Description::input_character() const
 {
-    return remaining_input_string[0];
+    if (remaining_input_string.length() != 0)
+      return remaining_input_string[0];
+    else
+      return '\0';
 }
 
 char Instantaneous_Description::top_of_stack() const
@@ -79,8 +99,10 @@ char Instantaneous_Description::top_of_stack() const
 
 bool Instantaneous_Description::is_empty_remaining_input_string() const
 {
-  if(remaining_input_string.length() == 0)
+  if(remaining_input_string[0] == '\0')
+  {
     return true;
+  }
   else
     return false;
 }
