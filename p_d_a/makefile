@@ -50,4 +50,4 @@ clean:
 	rm file_parsers/headers/*.h.gch
 
 immaculate:
-	rm -f tmapp
+	rm -f pda_app
